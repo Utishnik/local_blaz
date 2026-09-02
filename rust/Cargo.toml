@@ -1,0 +1,11 @@
+[package]
+name = "obxrac32b64"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "obxrac32b64"
+path = "obxrac32b64.rs"
+
+[dependencies]
+base64 = "0.22"
