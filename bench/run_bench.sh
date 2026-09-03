@@ -17,9 +17,16 @@ else
 fi
 echo "[1/2] Building C++ ($($CXX --version | head -1))..."
 
-# Флаги оптимизации + целевой процессор текущей машины
+# Максимальные флаги оптимизации + целевой процессор текущей машины
 CPPFLAGS="-O3 -march=native -mtune=native -flto=full \
-    -ffast-math -funroll-loops -fomit-frame-pointer"
+    -ffast-math -funroll-loops \
+    -fomit-frame-pointer \
+    -fvectorize -fslp-vectorize \
+    -fno-exceptions -fno-rtti \
+    -fstrict-aliasing -fstrict-overflow \
+    -finline-functions -fno-semantic-interposition \
+    -fvisibility=hidden \
+    -falign-functions=64 -falign-loops=64"
 
 # Использовать lld если он доступен
 if command -v ld.lld &> /dev/null; then
@@ -40,6 +47,7 @@ echo "--- Build done ---"
 echo ""
 
 RUST_BENCH=target/release/bench_rust
+RUST_BENCH_SIMD=target/release/bench_rust_simd
 RUST_TEST=target/release/test_rust
 
 KEY="SuperSecret123"
@@ -66,8 +74,13 @@ run_bench() {
 
     echo "  [warmup] Rust x${WARMUP_ITERS}..."
     "$RUST_BENCH" "$mode" "$key" "$text" "$WARMUP_ITERS" > /dev/null
-    echo -n "  Rust  : "
+    echo -n "  Rust   : "
     "$RUST_BENCH" "$mode" "$key" "$text" "$iters"
+
+    echo "  [warmup] Rust-SIMD x${WARMUP_ITERS}..."
+    "$RUST_BENCH_SIMD" "$mode" "$key" "$text" "$WARMUP_ITERS" > /dev/null
+    echo -n "  RustSIMD: "
+    "$RUST_BENCH_SIMD" "$mode" "$key" "$text" "$iters"
     echo ""
 }
 
@@ -95,6 +108,7 @@ echo "=============================="
 
 CPP_ENC=$("./test_cpp" encode "$KEY" "$TEXT_SHORT")
 RUST_ENC=$("$RUST_TEST" encode "$KEY" "$TEXT_SHORT")
+SIMD_ENC=$("$RUST_BENCH_SIMD" encode "$KEY" "$TEXT_SHORT" 1 | sed -E 's/.*avg=[0-9.]+us\/iter \|.*//')
 CPP_DEC=$("$RUST_TEST" decode "$KEY" "$CPP_ENC")
 RUST_DEC=$("$RUST_TEST" decode "$KEY" "$ENCODED_SHORT")
 

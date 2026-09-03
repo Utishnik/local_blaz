@@ -11,8 +11,13 @@ path = "bench_rust.rs"
 name = "test_rust"
 path = "test_rust.rs"
 
+[[bin]]
+name = "bench_rust_simd"
+path = "bench_rust_simd.rs"
+
 [dependencies]
 base64 = "0.22"
+base64-simd = "0.8"
 
 [profile.release]
 panic = "abort"

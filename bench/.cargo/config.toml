@@ -1,2 +1,9 @@
 [build]
-rustflags = ["-C", "target-cpu=native"]
+rustflags = [
+    # march=native аналог
+    "-C", "target-cpu=native",
+    # fomit-frame-pointer аналог
+    "-C", "force-frame-pointers=no",
+    # fstrict-overflow/ffast-math аналог: отключить проверку переполнения
+    "-C", "overflow-checks=off",
+]

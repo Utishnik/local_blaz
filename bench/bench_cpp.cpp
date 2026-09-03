@@ -7,11 +7,13 @@
 #include <cstdlib>
 
 std::string xor32(const std::string &sText, const std::string &sSecretKey) {
-    if (sSecretKey.empty()) return sText;
-    std::string result;
-    result.reserve(sText.size());
+    std::string result(sText.size(), '\0');
+    size_t klen = sSecretKey.size();
+    if (klen == 0) return result;
+    size_t ki = 0;
     for (size_t chunk = 0; chunk < sText.size(); ++chunk) {
-        result.push_back(sText[chunk] ^ sSecretKey[chunk % sSecretKey.size()]);
+        result[chunk] = sText[chunk] ^ sSecretKey[ki];
+        if (++ki == klen) ki = 0;
     }
     return result;
 }
@@ -45,6 +47,14 @@ std::string addce(const std::string &s, int group_size = 5) {
 static const char *BASE64_CHARS =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
+// lookup-таблица для decode: индекс символа -> значение (0x100 если невалидный)
+static int b64_lookup[256];
+static bool b64_init = [] {
+    for (int i = 0; i < 256; ++i) b64_lookup[i] = 0x100;
+    for (int i = 0; i < 64; ++i) b64_lookup[(unsigned char)BASE64_CHARS[i]] = i;
+    return true;
+}();
+
 std::string base64_encode(const std::string &input) {
     std::string out;
     out.reserve(((input.size() + 2) / 3) * 4);
@@ -62,9 +72,10 @@ std::string base64_encode(const std::string &input) {
     return out;
 }
 
-std::string rvbstr(std::string _key) {
-    std::reverse(_key.begin(), _key.end());
-    return _key;
+std::string rvbstr(const std::string &_key) {
+    std::string out = _key;
+    std::reverse(out.begin(), out.end());
+    return out;
 }
 
 std::string base64_decode(const std::string &input) {
@@ -73,9 +84,9 @@ std::string base64_decode(const std::string &input) {
     int val = 0, valb = -8;
     for (unsigned char c : input) {
         if (c == '=') break;
-        const char *p = strchr(BASE64_CHARS, c);
-        if (!p) continue;
-        val = (val << 6) + (p - BASE64_CHARS);
+        int v = b64_lookup[c];
+        if (v == 0x100) continue;
+        val = (val << 6) + v;
         valb += 6;
         if (valb >= 0) {
             out.push_back(char((val >> valb) & 0xFF));
@@ -85,7 +96,7 @@ std::string base64_decode(const std::string &input) {
     return out;
 }
 
-std::string obxrac32b64(bool isDecode, std::string m0, std::string m1) {
+std::string obxrac32b64(bool isDecode, const std::string &m0, const std::string &m1) {
     if (isDecode) {
         std::string a = base64_decode(m0);
         std::string b = xor32(a, m1);
