@@ -113,6 +113,11 @@ int main(int argc, char *argv[]) {
     int iterations = (argc >= 5) ? std::atoi(argv[4]) : 1000;
     bool isDecode = (mode == "decode");
 
+    int warmup = std::max(iterations / 10, 100);
+    for (int i = 0; i < warmup; ++i) {
+        volatile auto w = obxrac32b64(isDecode, text, key);
+    }
+
     auto start = std::chrono::high_resolution_clock::now();
     std::string result;
     for (int i = 0; i < iterations; ++i) {

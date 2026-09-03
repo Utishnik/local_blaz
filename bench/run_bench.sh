@@ -7,14 +7,31 @@ cd "$BENCH_DIR"
 echo "=== obxrac32b64 Benchmark: Rust vs C++ ==="
 echo ""
 
-# --- Build C++ ---
-echo "[1/2] Building C++ (g++ -O2)..."
-g++ -O2 -o bench_cpp bench_cpp.cpp -std=c++17
-g++ -O2 -o test_cpp test_cpp.cpp -std=c++17
+# Clang для сборки (если есть clang++-22/21 -> используем, иначе системный clang++)
+if command -v clang++-22 &> /dev/null; then
+    CXX=clang++-22
+elif command -v clang++-21 &> /dev/null; then
+    CXX=clang++-21
+else
+    CXX=clang++
+fi
+echo "[1/2] Building C++ ($($CXX --version | head -1))..."
+
+# Флаги оптимизации + целевой процессор текущей машины
+CPPFLAGS="-O3 -march=native -mtune=native -flto=full \
+    -ffast-math -funroll-loops -fomit-frame-pointer"
+
+# Использовать lld если он доступен
+if command -v ld.lld &> /dev/null; then
+    CPPFLAGS="$CPPFLAGS -fuse-ld=lld"
+fi
+
+$CXX $CPPFLAGS -o bench_cpp bench_cpp.cpp -std=c++20
+$CXX $CPPFLAGS -o test_cpp test_cpp.cpp -std=c++20
 echo "  -> OK"
 
 # --- Build Rust ---
-echo "[2/2] Building Rust (release)..."
+echo "[2/2] Building Rust (release: panic=abort, LTO, codegen-units=1, native)..."
 cargo build --release 2>&1 | tail -1
 echo "  -> OK"
 
@@ -22,17 +39,16 @@ echo ""
 echo "--- Build done ---"
 echo ""
 
-# Paths
 RUST_BENCH=target/release/bench_rust
 RUST_TEST=target/release/test_rust
 
-# Test data
 KEY="SuperSecret123"
 TEXT_SHORT="Hello World"
 TEXT_MED="The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs."
 TEXT_LONG=$(python3 -c "print('A' * 1000)")
 
 ITERATIONS=50000
+WARMUP_ITERS=2000
 
 run_bench() {
     local label="$1"
@@ -42,14 +58,19 @@ run_bench() {
     local iters="$5"
 
     echo "=== $label (mode=$mode, text_len=${#text}, iters=$iters) ==="
+
+    echo "  [warmup] C++ x${WARMUP_ITERS}..."
+    ./bench_cpp "$mode" "$key" "$text" "$WARMUP_ITERS" > /dev/null
     echo -n "  C++   : "
     ./bench_cpp "$mode" "$key" "$text" "$iters"
+
+    echo "  [warmup] Rust x${WARMUP_ITERS}..."
+    "$RUST_BENCH" "$mode" "$key" "$text" "$WARMUP_ITERS" > /dev/null
     echo -n "  Rust  : "
     "$RUST_BENCH" "$mode" "$key" "$text" "$iters"
     echo ""
 }
 
-# --- Encode benchmarks ---
 echo "=============================="
 echo "  ENCODE BENCHMARKS"
 echo "=============================="
@@ -57,7 +78,6 @@ run_bench "Short text" encode "$KEY" "$TEXT_SHORT" $ITERATIONS
 run_bench "Medium text" encode "$KEY" "$TEXT_MED" $ITERATIONS
 run_bench "Long text (1000 chars)" encode "$KEY" "$TEXT_LONG" 10000
 
-# --- Get encoded values for decode test ---
 ENCODED_SHORT=$(./test_cpp encode "$KEY" "$TEXT_SHORT")
 ENCODED_MED=$(./test_cpp encode "$KEY" "$TEXT_MED")
 ENCODED_LONG=$(./test_cpp encode "$KEY" "$TEXT_LONG")
@@ -69,7 +89,6 @@ run_bench "Short text" decode "$KEY" "$ENCODED_SHORT" $ITERATIONS
 run_bench "Medium text" decode "$KEY" "$ENCODED_MED" $ITERATIONS
 run_bench "Long text (1000 chars)" decode "$KEY" "$ENCODED_LONG" 10000
 
-# --- Correctness check ---
 echo "=============================="
 echo "  CORRECTNESS CHECK"
 echo "=============================="

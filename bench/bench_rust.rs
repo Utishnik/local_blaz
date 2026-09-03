@@ -69,6 +69,15 @@ fn main() {
     let iterations: usize = args.get(4).and_then(|s| s.parse().ok()).unwrap_or(1000);
     let is_decode = mode == "decode";
 
+    let warmup = (iterations / 10).max(100);
+    for _ in 0..warmup {
+        if is_decode {
+            let _ = decode(text, key);
+        } else {
+            let _ = encode(text, key);
+        }
+    }
+
     let start = Instant::now();
     let mut result = String::new();
     for _ in 0..iterations {
