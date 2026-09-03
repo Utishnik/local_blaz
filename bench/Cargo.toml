@@ -1,0 +1,15 @@
+[package]
+name = "bench_rust"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "bench_rust"
+path = "bench_rust.rs"
+
+[[bin]]
+name = "test_rust"
+path = "test_rust.rs"
+
+[dependencies]
+base64 = "0.22"
