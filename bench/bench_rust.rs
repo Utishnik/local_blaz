@@ -142,7 +142,7 @@ fn main() {
     }
     let input_len = bench_input.len();
 
-    let warmup = if large { 0 } else { (iterations / 10).max(100) };
+    let warmup = if large { 1 } else { (iterations / 10).max(100) };
     for _ in 0..warmup {
         if is_decode {
             let _ = decode(&bench_input, &key);

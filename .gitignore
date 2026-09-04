@@ -1,0 +1,15 @@
+# Rust build artifacts
+target/
+**/target/
+rust/target/
+
+# Compiled C++ binaries
+bench/bench_cpp
+bench/test_cpp
+
+# C++ object files
+*.o
+*.obj
+
+# Other build outputs
+x64/

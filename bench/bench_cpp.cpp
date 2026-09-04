@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
     }
     size_t input_len = bench_input.size();
 
-    int warmup = large ? 0 : std::max(iterations / 10, 100);
+    int warmup = large ? 1 : std::max(iterations / 10, 100);
     for (int i = 0; i < warmup; ++i) {
         volatile auto w = obxrac32b64(isDecode, bench_input, key);
     }
