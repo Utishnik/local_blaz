@@ -1,0 +1,11 @@
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/deps/prettytable-e568b292bfa06fa6.d: /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/lib.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/cell.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/format.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/row.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/utils.rs
+
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/deps/libprettytable-e568b292bfa06fa6.rlib: /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/lib.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/cell.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/format.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/row.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/utils.rs
+
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/deps/libprettytable-e568b292bfa06fa6.rmeta: /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/lib.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/cell.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/format.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/row.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/utils.rs
+
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/lib.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/cell.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/format.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/row.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/prettytable-rs-0.10.0/src/utils.rs:

@@ -1,0 +1,4 @@
+cargo:rerun-if-env-changed=RUSTC
+cargo:rerun-if-env-changed=RUSTUP_TOOLCHAIN
+cargo:rustc-env=HOTPATH_RUSTC_VERSION=1.98.0
+cargo:rustc-env=HOTPATH_CARGO_PROFILE=release

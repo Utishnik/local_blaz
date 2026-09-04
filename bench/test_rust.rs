@@ -41,10 +41,33 @@ pub fn reverse_bytes(data: &[u8]) -> Vec<u8> {
 }
 
 pub fn encode(text: &str, secret_key: &str) -> String {
-    let reversed = reverse_bytes(text.as_bytes());
-    let marked = inject_markers(&reversed, GROUP_SIZE, MARKER);
-    let encrypted = xor_bytes(&marked, secret_key.as_bytes());
-    BASE64.encode(encrypted)
+    let src = text.as_bytes();
+    let n = src.len();
+    let key = secret_key.as_bytes();
+    let key_len = key.len();
+    let full_groups = n / GROUP_SIZE;
+    let out_len = n + full_groups * MARKER.len();
+    let mut middle = Vec::<u8>::with_capacity(out_len);
+
+    let mut i = n;
+    let mut ki = 0usize;
+    while i > 0 {
+        let start = if i >= GROUP_SIZE { i - GROUP_SIZE } else { 0 };
+        let cnt = i - start;
+        for r in (0..cnt).rev() {
+            middle.push(src[start + r] ^ key[ki]);
+            ki = (ki + 1) % key_len;
+        }
+        i = start;
+        if cnt == GROUP_SIZE {
+            middle.push(b'$' ^ key[ki]);
+            ki = (ki + 1) % key_len;
+            middle.push(b'$' ^ key[ki]);
+            ki = (ki + 1) % key_len;
+        }
+    }
+
+    BASE64.encode(&middle)
 }
 
 pub fn decode(encoded: &str, secret_key: &str) -> Result<String, Box<dyn std::error::Error>> {

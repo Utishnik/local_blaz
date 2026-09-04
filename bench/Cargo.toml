@@ -15,9 +15,14 @@ path = "test_rust.rs"
 name = "bench_rust_simd"
 path = "bench_rust_simd.rs"
 
+[[bin]]
+name = "bench_rust_hotpath"
+path = "bench_rust_hotpath.rs"
+
 [dependencies]
 base64 = "0.22"
 base64-simd = "0.8"
+hotpath = { version = "0.25", features = ["hotpath", "hotpath-alloc"] }
 
 [profile.release]
 panic = "abort"

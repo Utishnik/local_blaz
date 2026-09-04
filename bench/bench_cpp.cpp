@@ -47,7 +47,6 @@ std::string addce(const std::string &s, int group_size = 5) {
 static const char *BASE64_CHARS =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-// lookup-таблица для decode: индекс символа -> значение (0x100 если невалидный)
 static int b64_lookup[256];
 static bool b64_init = [] {
     for (int i = 0; i < 256; ++i) b64_lookup[i] = 0x100;
@@ -104,44 +103,104 @@ std::string obxrac32b64(bool isDecode, const std::string &m0, const std::string 
         b = rvbstr(b);
         return b;
     } else {
-        std::string a = rvbstr(m0);
-        a = addc(5, a);
-        std::string b = xor32(a, m1);
-        b = base64_encode(b);
+        // Единый проход: reverse + markers($$) + xor, без промежуточных 4GB копий
+        const std::string &src = m0;
+        size_t n = src.size();
+        size_t klen = m1.size();
+        size_t full_groups = n / 5;
+        size_t out_len = n + full_groups * 2;
+        std::string middle;
+        middle.reserve(out_len);
+        size_t i = n;
+        size_t ki = 0;
+        while (i > 0) {
+            size_t start = (i >= 5) ? (i - 5) : 0;
+            size_t cnt = i - start;
+            for (size_t r = cnt; r-- > 0;) {
+                middle.push_back(src[start + r] ^ m1[ki]);
+                if (++ki == klen) ki = 0;
+            }
+            i = start;
+            if (cnt == 5) {
+                middle.push_back('$' ^ m1[ki]);
+                if (++ki == klen) ki = 0;
+                middle.push_back('$' ^ m1[ki]);
+                if (++ki == klen) ki = 0;
+            }
+        }
+        std::string b = base64_encode(middle);
         return b;
     }
 }
 
+// generate repeated text of given byte size
+std::string gen_data(size_t bytes) {
+    std::string pattern =
+        "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs 0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    std::string out;
+    out.reserve(bytes);
+    while (out.size() < bytes) {
+        out += pattern.substr(0, std::min(bytes - out.size(), pattern.size()));
+    }
+    return out;
+}
+
 int main(int argc, char *argv[]) {
     if (argc < 4) {
-        std::cerr << "Usage: " << argv[0] << " <encode|decode> <key> <text> [iterations]\n";
+        std::cerr << "Usage:\n"
+                  << "  " << argv[0] << " <encode|decode> <key> <text> [iterations]\n"
+                  << "  " << argv[0] << " --large <bytes> <key> [mode] [iterations]\n";
         return 1;
     }
 
-    std::string mode = argv[1];
-    std::string key = argv[2];
-    std::string text = argv[3];
-    int iterations = (argc >= 5) ? std::atoi(argv[4]) : 1000;
+    std::string mode;
+    std::string key;
+    std::string text;
+    int iterations = 1000;
+
+    bool large = (std::string(argv[1]) == "--large");
+    if (large) {
+        size_t bytes = std::atoll(argv[2]);
+        key = argv[3];
+        mode = (argc >= 5) ? argv[4] : "encode";
+        iterations = (argc >= 6) ? std::atoi(argv[5]) : 3;
+        text = gen_data(bytes);
+    } else {
+        mode = argv[1];
+        key = argv[2];
+        text = argv[3];
+        iterations = (argc >= 5) ? std::atoi(argv[4]) : 1000;
+    }
     bool isDecode = (mode == "decode");
 
-    int warmup = std::max(iterations / 10, 100);
+    // Для больших decode: кодируем вход заранее (вне таймера), чтобы decode получил честный base64 вход
+    std::string bench_input = text;
+    if (large && isDecode) {
+        bench_input = obxrac32b64(false, text, key);
+    }
+    size_t input_len = bench_input.size();
+
+    int warmup = large ? 0 : std::max(iterations / 10, 100);
     for (int i = 0; i < warmup; ++i) {
-        volatile auto w = obxrac32b64(isDecode, text, key);
+        volatile auto w = obxrac32b64(isDecode, bench_input, key);
     }
 
     auto start = std::chrono::high_resolution_clock::now();
     std::string result;
     for (int i = 0; i < iterations; ++i) {
-        result = obxrac32b64(isDecode, text, key);
+        result = obxrac32b64(isDecode, bench_input, key);
     }
     auto end = std::chrono::high_resolution_clock::now();
 
     double total_ms = std::chrono::duration<double, std::milli>(end - start).count();
     double avg_us = (total_ms * 1000.0) / iterations;
+    double mbps = (double)input_len / (total_ms / 1000.0) / (1024.0 * 1024.0);
 
-    std::cout << "C++ " << mode << " | iters=" << iterations
+    std::cout << "C++ " << mode << " | input=" << input_len << "B"
+              << " | iters=" << iterations
               << " | total=" << total_ms << "ms"
               << " | avg=" << avg_us << "us/iter"
+              << " | " << mbps << " MB/s"
               << " | result_len=" << result.size() << "\n";
 
     return 0;

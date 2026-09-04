@@ -1,0 +1,14 @@
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/deps/serde-08765298aab3cbbd.d: /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/build/serde-0706fe9cd6209e45/out/private.rs
+
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/deps/libserde-08765298aab3cbbd.rlib: /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/build/serde-0706fe9cd6209e45/out/private.rs
+
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/deps/libserde-08765298aab3cbbd.rmeta: /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/build/serde-0706fe9cd6209e45/out/private.rs
+
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:
+/home/utishnik/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs:
+/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/build/serde-0706fe9cd6209e45/out/private.rs:
+
+# env-dep:OUT_DIR=/mnt/c/Users/Admin/Desktop/obxrac32b64/bench/target/release/build/serde-0706fe9cd6209e45/out

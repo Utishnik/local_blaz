@@ -1,1 +1,85 @@
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+   0.026700600s  INFO prepare_target{force=false package_id=obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust) target="obxrac32b64"}: cargo::core::compiler::fingerprint: fingerprint error for obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust)/Check { test: false }/TargetInner { name: "obxrac32b64", doc: true, ..: with_path("C:\\Users\\Admin\\Desktop\\obxrac32b64\\rust\\obxrac32b64.rs", Edition2021) }
+   0.026765100s  INFO prepare_target{force=false package_id=obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust) target="obxrac32b64"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Users\Admin\Desktop\obxrac32b64\rust\target\debug\.fingerprint\obxrac32b64-3c18d04d80fefadc\bin-obxrac32b64`
+
+Caused by:
+    Не удается найти указанный файл. (os error 2)
+
+Stack backtrace:
+   0: git_midx_writer_dump
+   1: git_midx_writer_dump
+   2: git_midx_writer_dump
+   3: git_midx_writer_dump
+   4: git_filter_source_repo
+   5: git_filter_source_repo
+   6: git_filter_source_repo
+   7: git_filter_source_repo
+   8: git_filter_source_repo
+   9: git_filter_source_repo
+  10: git_libgit2_prerelease
+  11: <unknown>
+  12: <unknown>
+  13: <unknown>
+  14: <unknown>
+  15: git_midx_writer_dump
+  16: git_filter_source_repo
+  17: git_midx_writer_dump
+  18: BaseThreadInitThunk
+  19: RtlUserThreadStart
+   0.043559800s  INFO prepare_target{force=false package_id=base64 v0.22.1 target="base64"}: cargo::core::compiler::fingerprint: fingerprint error for base64 v0.22.1/Check { test: false }/TargetInner { name_inferred: true, ..: lib_target("base64", ["lib"], "C:\\Users\\Admin\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\base64-0.22.1\\src\\lib.rs", Edition2018) }
+   0.043630000s  INFO prepare_target{force=false package_id=base64 v0.22.1 target="base64"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Users\Admin\Desktop\obxrac32b64\rust\target\debug\.fingerprint\base64-037e73dad7c8b954\lib-base64`
+
+Caused by:
+    Не удается найти указанный файл. (os error 2)
+
+Stack backtrace:
+   0: git_midx_writer_dump
+   1: git_midx_writer_dump
+   2: git_midx_writer_dump
+   3: git_midx_writer_dump
+   4: git_filter_source_repo
+   5: git_filter_source_repo
+   6: git_filter_source_repo
+   7: git_filter_source_repo
+   8: git_filter_source_repo
+   9: git_filter_source_repo
+  10: git_filter_source_repo
+  11: git_libgit2_prerelease
+  12: <unknown>
+  13: <unknown>
+  14: <unknown>
+  15: <unknown>
+  16: git_midx_writer_dump
+  17: git_filter_source_repo
+  18: git_midx_writer_dump
+  19: BaseThreadInitThunk
+  20: RtlUserThreadStart
+   0.044895900s  INFO prepare_target{force=false package_id=obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust) target="obxrac32b64"}: cargo::core::compiler::fingerprint: fingerprint error for obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust)/Check { test: true }/TargetInner { name: "obxrac32b64", doc: true, ..: with_path("C:\\Users\\Admin\\Desktop\\obxrac32b64\\rust\\obxrac32b64.rs", Edition2021) }
+   0.044934100s  INFO prepare_target{force=false package_id=obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust) target="obxrac32b64"}: cargo::core::compiler::fingerprint:     err: failed to read `C:\Users\Admin\Desktop\obxrac32b64\rust\target\debug\.fingerprint\obxrac32b64-9b4763ac92050219\test-bin-obxrac32b64`
+
+Caused by:
+    Не удается найти указанный файл. (os error 2)
+
+Stack backtrace:
+   0: git_midx_writer_dump
+   1: git_midx_writer_dump
+   2: git_midx_writer_dump
+   3: git_midx_writer_dump
+   4: git_filter_source_repo
+   5: git_filter_source_repo
+   6: git_filter_source_repo
+   7: git_filter_source_repo
+   8: git_filter_source_repo
+   9: git_filter_source_repo
+  10: git_libgit2_prerelease
+  11: <unknown>
+  12: <unknown>
+  13: <unknown>
+  14: <unknown>
+  15: git_midx_writer_dump
+  16: git_filter_source_repo
+  17: git_midx_writer_dump
+  18: BaseThreadInitThunk
+  19: RtlUserThreadStart
+    Checking base64 v0.22.1
+    Checking obxrac32b64 v0.1.0 (C:\Users\Admin\Desktop\obxrac32b64\rust)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.90s

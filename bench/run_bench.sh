@@ -135,4 +135,34 @@ else
 fi
 
 echo ""
+echo "=============================="
+echo "  LARGE DATA BENCHMARKS"
+echo "  (generate data inside, 3 iters)"
+echo "=============================="
+
+run_large() {
+    local label="$1"
+    local bytes="$2"
+    local mode="$3"
+
+    echo "=== $label (${bytes}B, mode=$mode, iters=3) ==="
+    echo -n "  C++    : "
+    ./bench_cpp --large "$bytes" "$KEY" "$mode" 3
+    echo -n "  Rust   : "
+    "$RUST_BENCH" --large "$bytes" "$KEY" "$mode" 3
+    echo -n "  RustSIMD: "
+    "$RUST_BENCH_SIMD" --large "$bytes" "$KEY" "$mode" 3
+    echo ""
+}
+
+# 0.5 GB = 536870912 bytes
+HALF_GB=$((512 * 1024 * 1024))
+
+echo "--- Encode ---"
+run_large "0.5 GB" "$HALF_GB" encode
+
+echo "--- Decode (uses encoded size, ~1.33x of input) ---"
+run_large "0.5 GB (encoded)" "$HALF_GB" decode
+
+echo ""
 echo "=== Benchmark Complete ==="
